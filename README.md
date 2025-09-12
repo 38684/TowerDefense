@@ -1,97 +1,105 @@
 # Sprint 0 - Game Design Document : Tower Defense
 
-Naam:
+Naam: Jeffrey
 
-Klas: 
+Klas: SD2A
 
-Datum: 
+Datum: 11/09/2025
 
 ## 1. Titel en elevator pitch
 
-Titel:
+Titel: 
 
-Elevator pitch, maximaal twee zinnen: Beschrijf kort wat jouw game is en waarom het leuk is om te spelen.
+Een game in  WWII waar je meerdere waves van vijanden moet tegenhouden.
 
 ## 2. Wat maakt jouw tower defense uniek
 
-Beschrijf in één of twee zinnen wat jouw game onderscheidt van een standaard tower defense. Denk aan iets dat de speler op een nieuwe manier laat nadenken of spelen.
+De vijanden kunnen terug vechten en er is geen specifiek pad.
 
 ## 3. Schets van je level en UI
 
-Maak een schets op papier of digitaal en voeg deze afbeelding toe aan je repository. Voeg in deze sectie de afbeelding in.
+![sketch](sketch.png)
 
-Je schets bevat minimaal:
-
-    1. Het pad waar de vijanden over lopen met beginpunt en eindpunt.
-    2. De plaatsen waar torens gebouwd kunnen worden.
-    3. De locatie van de basis of goal die verdedigd moet worden.
-    4. De UI onderdelen geld, wave teller, levens, startknop en pauzeknop.
-    5. Een legenda met symbolen of kleuren voor torens, vijanden, pad, basis en UI.
 
 ## 4. Torens
 
-Toren 1 naam, bereik, schade, unieke eigenschap.
+Infantry
+range: 10
+damage: 3
+ability: none
 
-Toren 2 naam, bereik, schade, unieke eigenschap.
+Sniper
+range: 30
+damage: 12
+ability: none
 
 Eventuele extra torens:
 
 ## 5. Vijanden
 
-Vijand 1 naam, snelheid, levens, speciale eigenschap.
+Infantry
+speed: medium
+health: 5
+ability: none
 
-Vijand 2 naam, snelheid, levens, speciale eigenschap.
+Fighter Plane
+speed: medium-fast
+health 3
+ability: airborne
 
-Eventuele extra vijanden:
+Officer
+health: 50
+ability: melee
 
 ## 6. Gameplay loop
 
 Beschrijf in drie tot vijf stappen wat de speler steeds doet. 
 
-
-    1. 
+    1. Plannen
+    2. Plaats niewe towers
+    3. Wacht voor geld
 
 ## 7. Progressie
 
-Leg uit hoe het spel moeilijker wordt naarmate de waves doorgaan. Denk aan sterkere vijanden, kortere tussenpozen, hogere kosten of lagere beloningen.
+Meer en sterker vijanden.
 
 ## 8. Risico’s en oplossingen volgens PIO
 
-    Probleem 1:
+    Probleem 1: Enemies gaan niet dood.
 
-    Impact:
+    Impact: Groot
 
-    Oplossing:
+    Oplossing: Destroy(gameobject)
 
-    Probleem 2:
+    Probleem 2: Je kan geen torens plaatsen.
 
-    Impact:
+    Impact: Groot
 
-    Oplossing:
+    Oplossing: Fix collision detection voor torens plaatsen.
 
-    Probleem 3:
+    Probleem 3: Vijanden kunnen door torens bewegen.
 
-    Impact:
+    Impact: Groot
 
-    Oplossing:
+    Oplossing: Een flowfield voor navigatie gebruiken.
 
 ## 9. Planning per sprint en mechanics
 
 Schrijf per sprint welke mechanics jij oplevert in de build. Denk aan voorbeelden zoals vijandbeweging over een pad, torens plaatsen, doel kiezen en schieten, waves starten, UI voor geld en levens, upgrades, jouw unieke feature.
 
-Sprint 1 mechanics:
+Sprint 1 mechanics: UI
 
-Sprint 2 mechanics:
+Sprint 2 mechanics: Torens plaatsen
 
-Sprint 3 mechanics:
+Sprint 3 mechanics: Vijanden AI (Niet Generative AI)
 
-Sprint 4 mechanics:
+Sprint 4 mechanics: Waves zetten
 
-Sprint 5 mechanics:
+Sprint 5 mechanics: Maps Maken
 
 ## 10. Inspiratie
 
-Noem een bestaande tower defense game die jou inspireert en wat je daarvan meeneemt of juist vermijdt.
+WWII
 
 ## 11. Technisch ontwerp mini
 
@@ -106,35 +114,35 @@ Voorbeeld ingevuld bij 11.1 Vijandbeweging over het pad
 
 11.1 Vijandbeweging over het pad
 
-    Keuze:
-    Risico:
-    Oplossing:
-    Acceptatie:
+    Keuze: De vijanden bewegen niet op een specifieke pad.
+    Risico: Vijanden kunnen door torens bewegen.
+    Oplossing: Een flowfield voor navigatie gebruiken.
+    Acceptatie: De vijanden lopen rond de torens naar de goal.
 
 11.2 Doel kiezen en schieten
 
-    Keuze:
-    Risico:
-    Oplossing:
-    Acceptatie:
+    Keuze: Torens kunnen kiezen voor meerdere manieren van kiezen.
+    Risico: Torens kiezen de verkeerde vijanden.
+    Oplossing: Torens houden een lijst van vijanden.
+    Acceptatie: Torens schieten de eerste, laatste, dichtstbijzijnde of het verst weg.
 
 11.3 Waves en spawnen
 
-    Keuze:
-    Risico:
-    Oplossing:
-    Acceptatie:
+    Keuze: Vijanden spawnen in waves.
+    Risico: Vijanden kunnen allemaal tegelijk spawnen.
+    Oplossing: Cooroutines gebruiken voor timing.
+    Acceptatie: Vijanden spawnen achter elkaar.
 
 11.4 Economie en levens
 
-    Keuze:
-    Risico:
-    Oplossing:
-    Acceptatie:
+    Keuze: Je gebruikt geld om torens te plaatsen.
+    Risico: Je kan te veel geld krijgen.
+    Oplossing: De game testen.
+    Acceptatie: Je krijgt net genoeg geld om de vijanden te verslaan
 
 11.5 UI basis
 
-    Keuze:
-    Risico:
-    Oplossing:
-    Acceptatie:
+    Keuze: UI zit bovenaan.
+    Risico: UI overzicht van de veld kleiner maken.
+    Oplossing: Maak het veld kleiner.
+    Acceptatie: Je kan het heele veld op scherm zien.
