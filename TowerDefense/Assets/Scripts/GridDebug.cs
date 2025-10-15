@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+
 using UnityEditor;
 using UnityEngine;
 
@@ -12,20 +12,10 @@ public class GridDebug : MonoBehaviour
 
     public Sprite[] flowfieldIcons;
 
-    // Suppressing SendMessage warning OnValidate
-
-#if UNITY_EDITOR
-    void OnValidate() {
-        EditorApplication.delayCall += _OnValidate;
-    }
-
-    private void _OnValidate()
+    private void OnValidate()
     {
-        if (this == null) return;
-
         DrawFlowfield();
     }
-#endif
 
     public void DrawFlowfield()
     {

@@ -7,6 +7,7 @@ public class UnitController : MonoBehaviour
 {
     public GridController gridController;
     public GameObject unitPrefab;
+    public GameObject circle;
     public int amountUnitsPerSpawn;
     public float moveSpeed;
     public InputActionReference leftClick;
@@ -27,12 +28,14 @@ public class UnitController : MonoBehaviour
     private void FixedUpdate()
     {
         if (gridController.currentFlowfield == null) { return; }
+
         foreach (GameObject unit in unitsInGame)
         {
             Cell nodeBelow = gridController.currentFlowfield.WorldToCell(unit.transform.position);
             Vector3 moveDirection = new Vector3(nodeBelow.bestDirection.vector.x, nodeBelow.bestDirection.vector.y, 0);
             Rigidbody2D unitRigidbody = unit.GetComponent<Rigidbody2D>();
             unitRigidbody.linearVelocity = moveDirection * moveSpeed;
+            Debug.Log(unitRigidbody.linearVelocity);
         }
     }
 
@@ -41,7 +44,6 @@ public class UnitController : MonoBehaviour
         Vector2Int gridSize = gridController.gridSize;
         float nodeRadius = gridController.cellradius;
         Vector2 maxSpawnPosition = new Vector2(gridSize.x * nodeRadius * 2, gridSize.y * nodeRadius * 2);
-        Vector3 newPosition;
 
         for (int i = 0; i < amountUnitsPerSpawn; i++)
         {

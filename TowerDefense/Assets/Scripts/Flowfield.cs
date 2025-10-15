@@ -1,13 +1,13 @@
+
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class Flowfield
 {
-    public Tilemap tilemap { get; private set; }
-    public Dictionary<string, TileBase> tileDictionary { get; private set; }
+	public Tilemap roughTerrainTilemap { get; private set; }
+	public Tilemap impassibleTerrainTilemap { get; private set; }
+	public Dictionary<string, TileBase> tileDictionary { get; private set; }
     public Cell[,] grid { get; private set; }
     public Vector2Int gridSize { get; private set; }
     public float cellRadius { get; private set; }
@@ -15,10 +15,10 @@ public class Flowfield
 
     private float cellDiameter;
 
-    public Flowfield(float _cellRadius, Vector2Int _gridSize, Tilemap _tilemap, Dictionary<string, TileBase> _tileDictionary)
+    public Flowfield(float _cellRadius, Vector2Int _gridSize, Tilemap _roughTerrainTilemap, Tilemap _impassibleTerrainTilemap)
     {
-        tilemap = _tilemap;
-        tileDictionary = _tileDictionary;
+        roughTerrainTilemap = _roughTerrainTilemap;
+        impassibleTerrainTilemap = _impassibleTerrainTilemap;
         cellRadius = _cellRadius;
         cellDiameter = cellRadius * 2f;
         gridSize = _gridSize;
@@ -44,20 +44,22 @@ public class Flowfield
     public void CreateCostField()
     {
         Vector3 cellHalfExtents = Vector3.one * cellRadius;
-        TileBase tileBase;
+		TileBase roughTerrainTileBase;
+		TileBase impassibleTerrainTileBase;
 
-        foreach (Cell currentCell in grid)
+		foreach (Cell currentCell in grid)
         {
-            tileBase = tilemap.GetTile(tilemap.WorldToCell(currentCell.worldPosition));
-            bool hasIncreasedCost = false;
+			impassibleTerrainTileBase = impassibleTerrainTilemap.GetTile(impassibleTerrainTilemap.WorldToCell(currentCell.worldPosition));
+			roughTerrainTileBase = roughTerrainTilemap.GetTile(roughTerrainTilemap.WorldToCell(currentCell.worldPosition));
+			bool hasIncreasedCost = false;
 
             if (hasIncreasedCost)
                 continue;
 
-            if (tileBase == tileDictionary["Rock"])
+            if (impassibleTerrainTileBase != null)
                 currentCell.IncreaseCost(255);
 
-            else if (tileBase == tileDictionary["Mud"])
+            else if (roughTerrainTileBase != null)
                 currentCell.IncreaseCost(3);
 
             hasIncreasedCost = true;
@@ -147,11 +149,11 @@ public class Flowfield
         float percentX = worldPosition.x / (gridSize.x * cellDiameter);
         float percentY = worldPosition.y / (gridSize.y * cellDiameter);
 
-        percentX = Mathf.Clamp01(percentX);
-        percentY = Mathf.Clamp01(percentY); 
+        percentX = Mathf.Clamp01(percentX + 0.5f);
+        percentY = Mathf.Clamp01(percentY + 0.5f);
 
-        int x = Mathf.Clamp(Mathf.FloorToInt((gridSize.x) * percentX), gridSize.x - 1, 0);
-        int y = Mathf.Clamp(Mathf.FloorToInt((gridSize.y) * percentY), gridSize.y - 1, 0);
+        int x = Mathf.Clamp(Mathf.FloorToInt((gridSize.x) * percentX), 0, gridSize.x - 1);
+        int y = Mathf.Clamp(Mathf.FloorToInt((gridSize.y) * percentY), 0, gridSize.y - 1);
         return grid[x, y];
     }
 }
