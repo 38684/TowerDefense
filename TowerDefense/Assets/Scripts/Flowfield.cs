@@ -1,4 +1,4 @@
-
+ 
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -12,8 +12,7 @@ public class Flowfield
     public Vector2Int gridSize { get; private set; }
     public float cellRadius { get; private set; }
     public Cell destinationCell;
-
-    private float cellDiameter;
+    float cellDiameter;
 
     public Flowfield(float _cellRadius, Vector2Int _gridSize, Tilemap _roughTerrainTilemap, Tilemap _impassibleTerrainTilemap)
     {
@@ -34,7 +33,7 @@ public class Flowfield
             {
                 Vector3 worldPosition = new Vector3(
                     cellDiameter * x - gridSize.x / 2 - cellRadius,
-                    cellDiameter * y - gridSize.y / 2 + cellRadius, 
+                    cellDiameter * y - gridSize.y / 2, 
                     0);
                 grid[x, y] = new Cell(worldPosition, new Vector2Int(x, y));
             }
@@ -43,7 +42,6 @@ public class Flowfield
 
     public void CreateCostField()
     {
-        Vector3 cellHalfExtents = Vector3.one * cellRadius;
 		TileBase roughTerrainTileBase;
 		TileBase impassibleTerrainTileBase;
 
@@ -56,11 +54,14 @@ public class Flowfield
             if (hasIncreasedCost)
                 continue;
 
-            if (impassibleTerrainTileBase != null)
-                currentCell.IncreaseCost(255);
+            if (currentCell.worldPosition.x > gridSize.x / 2 - 1)
+                currentCell.SetCost(0);
+
+            else if (impassibleTerrainTileBase != null)
+                currentCell.SetCost(255);
 
             else if (roughTerrainTileBase != null)
-                currentCell.IncreaseCost(3);
+                currentCell.SetCost(3);
 
             hasIncreasedCost = true;
         }

@@ -22,7 +22,7 @@ public class GridController : MonoBehaviour
 
         currentFlowfield.CreateCostField();
 
-        Cell cellDestination = currentFlowfield.grid[gridSize.x / 2 + 8, gridSize.y / 2];
+        Cell cellDestination = currentFlowfield.grid[gridSize.x - 1, gridSize.y / 2];
         currentFlowfield.CreateIntegrationField(cellDestination);
         currentFlowfield.CreateFlowfield();
     }

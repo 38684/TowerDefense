@@ -6,10 +6,9 @@ public enum FlowfieldDisplayType { None, AllIcons, DestinationIcon, CostField, I
 
 public class GridDebug : MonoBehaviour
 {
-    public GridController gridController;
-    public bool displayGrid;
-    public FlowfieldDisplayType currentDisplayType;
-
+    [SerializeField] GridController gridController;
+    [SerializeField] bool displayGrid;
+    [SerializeField] FlowfieldDisplayType currentDisplayType;
     public Sprite[] flowfieldIcons;
 
     private void OnValidate()
@@ -71,40 +70,20 @@ public class GridDebug : MonoBehaviour
         {
             iconSpriteRenderer.sprite = flowfieldIcons[0];
         }
-        else if (cell.bestDirection == GridDirection.NorthEast)
-        {
-            iconSpriteRenderer.sprite = flowfieldIcons[0];
-            iconGameObject.transform.rotation = Quaternion.Euler(0, 0, 315);
-        }
         else if (cell.bestDirection == GridDirection.East)
         {
             iconSpriteRenderer.sprite = flowfieldIcons[0];
             iconGameObject.transform.rotation = Quaternion.Euler(0, 0, 270);
-        }
-        else if (cell.bestDirection == GridDirection.SouthEast)
-        {
-            iconSpriteRenderer.sprite = flowfieldIcons[0];
-            iconGameObject.transform.rotation = Quaternion.Euler(0, 0, 225);
         }
         else if (cell.bestDirection == GridDirection.South)
         {
             iconSpriteRenderer.sprite = flowfieldIcons[0];
             iconGameObject.transform.rotation = Quaternion.Euler(0, 0, 180);
         }
-        else if (cell.bestDirection == GridDirection.SouthWest)
-        {
-            iconSpriteRenderer.sprite = flowfieldIcons[0];
-            iconGameObject.transform.rotation = Quaternion.Euler(0, 0, 135);
-        }
         else if (cell.bestDirection == GridDirection.West)
         {
             iconSpriteRenderer.sprite = flowfieldIcons[0];
             iconGameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
-        }
-        else if (cell.bestDirection == GridDirection.NorthWest)
-        {
-            iconSpriteRenderer.sprite = flowfieldIcons[0];
-            iconGameObject.transform.rotation = Quaternion.Euler(0, 0, 45);
         }
         else {
             iconSpriteRenderer.sprite = flowfieldIcons[2];
@@ -162,7 +141,7 @@ public class GridDebug : MonoBehaviour
             {
                 Vector3 center = new Vector3(
                     drawCellRadius * 2 * x - gridController.gridSize.x / 2 - drawCellRadius,
-                    drawCellRadius * 2 * y - gridController.gridSize.y / 2 + drawCellRadius,
+                    drawCellRadius * 2 * y - gridController.gridSize.y / 2,
                     0);
                 Vector3 size = Vector3.one * drawCellRadius * 2;
                 Gizmos.DrawWireCube(center, size);

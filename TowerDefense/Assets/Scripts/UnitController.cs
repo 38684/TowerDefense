@@ -1,76 +1,48 @@
 
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class UnitController : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
-    public GridController gridController;
-    public GameObject unitPrefab;
-    public GameObject circle;
-    public int amountUnitsPerSpawn;
-    public float moveSpeed;
-    public InputActionReference leftClick;
-    public InputActionReference rightClick;
+    [SerializeField] float speed;
+    [SerializeField] int health;
+    GridController gridController;
+    WaveSpawner waveSpawner;
+    PlayerStats playerStats;
 
-    private List<GameObject> unitsInGame;
-
-    private void LeftClick(InputAction.CallbackContext Object)
+    private void Start()
     {
-        SpawnUnits();
-    }
-
-    private void RightClick(InputAction.CallbackContext Object)
-    {
-        DestroyUnits();
+        gridController = GameObject.Find("GridController").GetComponent<GridController>();
+        waveSpawner = GameObject.Find("WaveSpawner").GetComponent<WaveSpawner>();
+        playerStats = GameObject.Find("Canvas").GetComponent<PlayerStats>();
     }
 
     private void FixedUpdate()
     {
-        if (gridController.currentFlowfield == null) { return; }
-
-        foreach (GameObject unit in unitsInGame)
+        if (transform.position.x >= 17.5)
         {
-            Cell nodeBelow = gridController.currentFlowfield.WorldToCell(unit.transform.position);
-            Vector3 moveDirection = new Vector3(nodeBelow.bestDirection.vector.x, nodeBelow.bestDirection.vector.y, 0);
-            Rigidbody2D unitRigidbody = unit.GetComponent<Rigidbody2D>();
-            unitRigidbody.linearVelocity = moveDirection * moveSpeed;
-            Debug.Log(unitRigidbody.linearVelocity);
-        }
-    }
-
-    private void SpawnUnits()
-    {
-        Vector2Int gridSize = gridController.gridSize;
-        float nodeRadius = gridController.cellradius;
-        Vector2 maxSpawnPosition = new Vector2(gridSize.x * nodeRadius * 2, gridSize.y * nodeRadius * 2);
-
-        for (int i = 0; i < amountUnitsPerSpawn; i++)
-        {
-            GameObject newUnit = Instantiate(unitPrefab);
-            newUnit.transform.parent = transform;
-            unitsInGame.Add(newUnit);
-        }
-    }
-
-    private void DestroyUnits()
-    {
-        foreach (GameObject gameObject in unitsInGame)
-        {
+            waveSpawner.enemiesAlive--;
+            playerStats.LoseHealth(health / 2);
             Destroy(gameObject);
         }
 
-        unitsInGame.Clear();
+        if (gridController.currentFlowfield == null) { return; }
+
+        //Debug.Log(transform.position.x % 1);
+        //Debug.Log(transform.position.y % 1);
+
+        //if (transform.position.x % 1 + 0.5f < 0.25f ||
+        //    transform.position.x % 1 + 0.5f > 0.75f ||
+        //    transform.position.y % 1 < 0.25f ||
+        //    transform.position.y % 1 > 0.75f) { return; }
+
+        Cell cellBelow = gridController.currentFlowfield.WorldToCell(transform.position);
+        Vector3 moveDirection = new Vector3(cellBelow.bestDirection.vector.x, cellBelow.bestDirection.vector.y, 0);
+        GetComponent<Rigidbody2D>().linearVelocity = moveDirection * speed;
     }
 
-    private void Awake()
+    private void Update()
     {
-        unitsInGame = new List<GameObject>();
-    }
-
-    private void OnEnable()
-    {
-        leftClick.action.started += LeftClick;
-        rightClick.action.started += RightClick;
+        if (health <= 0)
+            Destroy(gameObject);
     }
 }

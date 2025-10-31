@@ -7,7 +7,7 @@ public class GridDirection
 {
     public readonly Vector2Int vector;
 
-    private  GridDirection(int x, int y)
+    private GridDirection(int x, int y)
     {
         vector = new Vector2Int(x, y);
     }
@@ -19,19 +19,15 @@ public class GridDirection
 
     public static GridDirection GetDirectionFromVector(Vector2Int vector)
     {
-        return EightWindDirections.DefaultIfEmpty(None).FirstOrDefault(direction => direction == vector);
+        return CardinalDirections.DefaultIfEmpty(None).FirstOrDefault(direction => direction == vector);
     }
 
     public static readonly GridDirection
         None = new GridDirection(0, 0),
         North = new GridDirection(0, 1),
-        NorthEast = new GridDirection(1, 1),
         East = new GridDirection(1, 0),
-        SouthEast = new GridDirection(1, -1),
         South = new GridDirection(0, -1),
-        SouthWest = new GridDirection(-1, -1),
-        West = new GridDirection(-1, 0),
-        NorthWest = new GridDirection(-1, 1);
+        West = new GridDirection(-1, 0);
 
     public static readonly List<GridDirection> CardinalDirections = new List<GridDirection>
     {
@@ -41,28 +37,12 @@ public class GridDirection
         West
     };
 
-    public static readonly List<GridDirection> EightWindDirections = new List<GridDirection>
-    {
-        North,
-        NorthEast,
-        East,
-        SouthEast,
-        South,
-        SouthWest,
-        West,
-        NorthWest
-    };
-
     public static readonly List<GridDirection> AllDirections = new List<GridDirection>
     {
         None,
         North,
-        NorthEast,
         East,
-        SouthEast,
         South,
-        SouthWest,
         West,
-        NorthWest
     };
 }

@@ -18,10 +18,10 @@ public class Cell
         bestDirection = GridDirection.None;
     }
 
-    public void IncreaseCost(int amount)
+    public void SetCost(int amount)
     {
         if (cost == byte.MaxValue) { return; }
-        if (cost + amount >= byte.MaxValue) {  cost = byte.MaxValue; }
-        else { cost += (byte)amount; }
+        if (amount >= byte.MaxValue) {  cost = byte.MaxValue; }
+        else { cost = (byte)amount; }
     }
 }
