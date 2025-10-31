@@ -1,3 +1,7 @@
+# Controls
+Left Click to place or upgrade towers\
+Spacebar to spawn wave
+
 # Sprint 0 - Game Design Document : Tower Defense
 
 Naam: Jeffrey

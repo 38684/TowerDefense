@@ -1,16 +1,18 @@
 
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class WaveSpawner : MonoBehaviour
 {
     [SerializeField] GridController gridController;
+    [SerializeField] TMP_Text WaveText;
     [SerializeField] GameObject[] enemyList;
     public int enemiesAlive = 0;
     int waveCount = 0;
-    float waveBudget = 3;
     float delay = 1;
+    float waveBudget = 6;
     Vector3 spawnPosition;
 
     void Start()
@@ -26,6 +28,7 @@ public class WaveSpawner : MonoBehaviour
                 return;
 
             waveCount++;
+            WaveText.text = "Wave: " + waveCount;
             StartCoroutine(SpawnWave());
         }
     }
@@ -36,43 +39,43 @@ public class WaveSpawner : MonoBehaviour
 
         switch (waveCount % 10) { 
             case 0:
-                for (int i = 0; i < waveBudget; i += 10)
+                for (int i = 0; i < waveBudget; i += 20)
                 {
                     Instantiate(enemyList[3], spawnPosition, new Quaternion(0, 0, 0, 0));
                     enemiesAlive++;
-                    yield return new WaitForSeconds(delay);
+                    yield return new WaitForSeconds(delay * 4);
                 }
                 break;
 
             case 3:
-                for (int i = 0; i < waveBudget; i += 2)
+                for (int i = 0; i < waveBudget; i += 3)
                 {
                     Instantiate(enemyList[1], spawnPosition, new Quaternion(0, 0, 0, 0));
                     enemiesAlive++;
-                    yield return new WaitForSeconds(delay);
+                    yield return new WaitForSeconds(delay / 2);
                 }
                 break;
 
             case 7:
-                for (int i = 0; i < waveBudget; i += 2)
+                for (int i = 0; i < waveBudget; i += 3)
                 {
                     Instantiate(enemyList[1], spawnPosition, new Quaternion(0, 0, 0, 0));
                     enemiesAlive++;
-                    yield return new WaitForSeconds(delay);
+                    yield return new WaitForSeconds(delay / 2);
                 }
                 break;
 
             case 5:
-                for (int i = 0; i < waveBudget; i += 2)
+                for (int i = 0; i < waveBudget; i += 3)
                 {
                     Instantiate(enemyList[2], spawnPosition, new Quaternion(0, 0, 0, 0));
                     enemiesAlive++;
-                    yield return new WaitForSeconds(delay);
+                    yield return new WaitForSeconds(delay * 2);
                 }
                 break;
 
             default:
-                for (int i = 0; i < waveBudget; i++)
+                for (int i = 0; i < waveBudget; i += 2)
                 {
                     Instantiate(enemyList[0], spawnPosition, new Quaternion(0, 0, 0, 0));
                     enemiesAlive++;
@@ -81,9 +84,9 @@ public class WaveSpawner : MonoBehaviour
                 break;
         }
 
-        waveBudget = Mathf.Floor(waveBudget * 1.5f);
+        waveBudget *= 1.10f;
 
-        delay /= 0.9f;
+        delay *= 0.9f;
         
         if (delay <= 0.1f)
             delay = 0.1f;

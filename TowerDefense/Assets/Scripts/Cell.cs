@@ -5,9 +5,10 @@ public class Cell
 {
     public Vector3 worldPosition;
     public Vector2Int gridIndex;
+    public GridDirection bestDirection;
+    public bool hasTower;
     public byte cost;
     public ushort bestCost;
-    public GridDirection bestDirection;
     
     public Cell(Vector3 _worldPosition, Vector2Int _gridIndex)
     {

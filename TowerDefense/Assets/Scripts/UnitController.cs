@@ -1,13 +1,15 @@
 
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] float speed;
     [SerializeField] int health;
+    [SerializeField] float speed;
     GridController gridController;
     WaveSpawner waveSpawner;
     PlayerStats playerStats;
+    Cell cellBelow;
 
     private void Start()
     {
@@ -15,7 +17,7 @@ public class EnemyController : MonoBehaviour
         waveSpawner = GameObject.Find("WaveSpawner").GetComponent<WaveSpawner>();
         playerStats = GameObject.Find("Canvas").GetComponent<PlayerStats>();
     }
-
+    
     private void FixedUpdate()
     {
         if (transform.position.x >= 17.5)
@@ -34,15 +36,30 @@ public class EnemyController : MonoBehaviour
         //    transform.position.x % 1 + 0.5f > 0.75f ||
         //    transform.position.y % 1 < 0.25f ||
         //    transform.position.y % 1 > 0.75f) { return; }
+        if(cellBelow != null)
+        {
+            Vector3 difference = cellBelow.worldPosition - transform.position;
+            if (difference.magnitude > 0.95f)
+            {
+                cellBelow = gridController.currentFlowfield.WorldToCell(transform.position);
+            }
+        }
+        else
+            cellBelow = gridController.currentFlowfield.WorldToCell(transform.position);
 
-        Cell cellBelow = gridController.currentFlowfield.WorldToCell(transform.position);
         Vector3 moveDirection = new Vector3(cellBelow.bestDirection.vector.x, cellBelow.bestDirection.vector.y, 0);
-        GetComponent<Rigidbody2D>().linearVelocity = moveDirection * speed;
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + moveDirection, Time.deltaTime * speed);
     }
 
-    private void Update()
+    public void LoseHealth(int damage)
     {
+        health -= damage;
+
         if (health <= 0)
+        {
+            waveSpawner.enemiesAlive--;
+            playerStats.ChangeMoney(20);
             Destroy(gameObject);
+        }
     }
 }
