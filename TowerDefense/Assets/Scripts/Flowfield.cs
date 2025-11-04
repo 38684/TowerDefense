@@ -147,14 +147,12 @@ public class Flowfield
 
     public Cell WorldToCell(Vector3 worldPosition)
     {
-        float percentX = worldPosition.x / (gridSize.x * cellDiameter);
-        float percentY = worldPosition.y / (gridSize.y * cellDiameter);
-
-        percentX = Mathf.Clamp01(percentX + 0.5f);
-        percentY = Mathf.Clamp01(percentY + 0.5f);
+        float percentX = (worldPosition.x + gridSize.x * cellRadius) / (gridSize.x * cellDiameter);
+        float percentY = (worldPosition.y + gridSize.y * cellRadius) / (gridSize.y * cellDiameter);
 
         int x = Mathf.Clamp(Mathf.FloorToInt((gridSize.x) * percentX), 0, gridSize.x - 1);
         int y = Mathf.Clamp(Mathf.FloorToInt((gridSize.y) * percentY), 0, gridSize.y - 1);
+
         return grid[x, y];
     }
 }

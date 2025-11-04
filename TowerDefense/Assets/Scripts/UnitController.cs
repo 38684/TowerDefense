@@ -20,7 +20,7 @@ public class EnemyController : MonoBehaviour
     
     private void FixedUpdate()
     {
-        if (transform.position.x >= 17.5)
+        if (transform.position.x >= 13.5)
         {
             waveSpawner.enemiesAlive--;
             playerStats.LoseHealth(health / 2);
@@ -58,7 +58,7 @@ public class EnemyController : MonoBehaviour
         if (health <= 0)
         {
             waveSpawner.enemiesAlive--;
-            playerStats.ChangeMoney(20);
+            playerStats.ChangeMoney(15);
             Destroy(gameObject);
         }
     }

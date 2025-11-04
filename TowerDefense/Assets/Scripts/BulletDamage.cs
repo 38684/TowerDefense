@@ -5,7 +5,7 @@ public class BulletDamage : MonoBehaviour
 {
     public Vector3 moveDirection;
     public int damage;
-    float speed = 10000f;
+    float speed = 100000f;
     float timer = 0;
 
     private void FixedUpdate()

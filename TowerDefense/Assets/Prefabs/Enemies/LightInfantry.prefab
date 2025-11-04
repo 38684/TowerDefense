@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6034707151847504342}
   - component: {fileID: 5894681745876448118}
   - component: {fileID: 8347834324861802389}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: LightInfantry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 78526f1af328ef14aab1f066d88651fd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -168,5 +168,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c53b5609afda9534cb26c373a59dbf95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitController
-  speed: 4
   health: 1
+  speed: 4

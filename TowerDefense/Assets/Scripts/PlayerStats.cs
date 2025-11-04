@@ -6,7 +6,7 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField] TMP_Text healthDisplay;
     [SerializeField] TMP_Text moneyDisplay;
-    public int money = 100;
+    public int money = 300;
     int health = 10;
 
     public void LoseHealth(int damage)

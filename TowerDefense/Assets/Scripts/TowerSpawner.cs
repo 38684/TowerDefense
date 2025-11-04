@@ -1,44 +1,67 @@
-using UnityEditor.Rendering.Universal;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public class TowerSpawner : MonoBehaviour
 {
+    [SerializeField] Tilemap impassibleTerrainTilemap;
     [SerializeField] GridController gridController;
     [SerializeField] PlayerStats playerStats;
     [SerializeField] GameObject towerPrefab;
+    [SerializeField] GameObject towerPreview;
     Cell cellBelow;
+    Vector3 mousePosition;
+    Vector3 roundedMousePosition;
+    bool isPlacing;
+
+    private void Update()
+    {
+        mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        roundedMousePosition = new Vector3(Mathf.Floor(mousePosition.x) + 0.5f, Mathf.Floor(mousePosition.y + 0.5f), 0);
+        
+        if (towerPreview.activeSelf)
+            towerPreview.transform.position = new Vector3(roundedMousePosition.x, roundedMousePosition.y - 0.1f, 0);
+    }
+
+    public void PlaceTower()
+    {
+        towerPreview.SetActive(true);
+        isPlacing = true;
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        towerPreview.SetActive(false);
+        isPlacing = false;
+    }
 
     public void OnLeftClick(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            Vector3 screenClickPosition = Mouse.current.position.ReadValue();
-            screenClickPosition.z = 0;
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(screenClickPosition);
+            cellBelow =  gridController.currentFlowfield.WorldToCell(roundedMousePosition);
 
-            if (mousePosition.x < -gridController.gridSize.x / 2 - gridController.cellradius ||
-                mousePosition.x > gridController.gridSize.x / 2 - gridController.cellradius ||
-                mousePosition.y < -gridController.gridSize.y / 2 ||
-                mousePosition.y > gridController.gridSize.y / 2)
+            if (impassibleTerrainTilemap.GetTile(impassibleTerrainTilemap.WorldToCell(cellBelow.worldPosition)) == null)
                 return;
-            
-            cellBelow =  gridController.currentFlowfield.WorldToCell(new Vector3(Mathf.Round(mousePosition.x - 0.5f) + 0.5f, Mathf.Round(mousePosition.y), 0));
 
             if (cellBelow.hasTower)
             {
-                RaycastHit2D hit = Physics2D.Raycast(new Vector2(mousePosition.x, mousePosition.y), Vector2.zero);
-               
+                RaycastHit2D hit = Physics2D.Raycast(roundedMousePosition, Vector2.zero);
+
                 if (hit.collider != null)
-                    hit.collider.gameObject.GetComponent<TowerController>().UpgradeTower();
+                    hit.collider.gameObject.transform.GetChild(0).GetComponent<TowerController>().UpgradeTower();
 
                 return;
             }
 
+            if (!isPlacing)
+                return;
+
             if (playerStats.money < 100)
                 return;
 
-            Instantiate(towerPrefab, new Vector3(Mathf.Round(mousePosition.x - 0.5f) + 0.5f, Mathf.Round(mousePosition.y), 0), new Quaternion(0, 0, 0, 0));
+            Instantiate(towerPrefab, new Vector3(roundedMousePosition.x, roundedMousePosition.y - 0.1f, 0), new Quaternion(0, 0, 0, 0));
             playerStats.ChangeMoney(-100);
             cellBelow.hasTower = true;
         }

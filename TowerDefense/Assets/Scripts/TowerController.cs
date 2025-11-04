@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class TowerController : MonoBehaviour
 {
     [SerializeField] GameObject bulletPrefab;
-    PlayerStats playerStats;
+    [SerializeField] Text towerLevelDisplay;
     List<GameObject> targetList = new List<GameObject>();
+    PlayerStats playerStats;
+    CircleCollider2D towerCollider;
     GameObject bullet;
     int level = 1;
     int damage = 1;
@@ -18,6 +21,7 @@ public class TowerController : MonoBehaviour
     private void Start()
     {
         playerStats = GameObject.Find("Canvas").GetComponent<PlayerStats>();
+        towerCollider = GetComponent<CircleCollider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -53,14 +57,16 @@ public class TowerController : MonoBehaviour
 
     public void UpgradeTower()
     {
-        if (level > 2)
+        if (level > 3)
             return;
 
         if (playerStats.money <= level * 150)
             return;
 
-        playerStats.ChangeMoney(level * -150);
+        playerStats.ChangeMoney(-100 + level * -100);
         level++;
-        damage *= 2;
+        towerLevelDisplay.text += "X";
+        damage += 2;
+        towerCollider.radius += 2f;
     }
 }

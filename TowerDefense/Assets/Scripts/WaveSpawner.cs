@@ -88,8 +88,8 @@ public class WaveSpawner : MonoBehaviour
 
         delay *= 0.9f;
         
-        if (delay <= 0.1f)
-            delay = 0.1f;
+        if (delay <= 0.5f)
+            delay = 0.5f;
         
         yield break;
     }
